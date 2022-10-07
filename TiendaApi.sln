@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TiendaApi", "TiendaApi\TiendaApi.csproj", "{ABF78EED-4A4A-4D49-97A1-5777B17BDC6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TiendaApi", "TiendaApi\TiendaApi.csproj", "{ABF78EED-4A4A-4D49-97A1-5777B17BDC6E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsumirApi", "ConsumirApi\ConsumirApi.csproj", "{B3FCC381-BFBE-4493-AB01-0EA6CCCCDB30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{ABF78EED-4A4A-4D49-97A1-5777B17BDC6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABF78EED-4A4A-4D49-97A1-5777B17BDC6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ABF78EED-4A4A-4D49-97A1-5777B17BDC6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3FCC381-BFBE-4493-AB01-0EA6CCCCDB30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3FCC381-BFBE-4493-AB01-0EA6CCCCDB30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3FCC381-BFBE-4493-AB01-0EA6CCCCDB30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3FCC381-BFBE-4493-AB01-0EA6CCCCDB30}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
