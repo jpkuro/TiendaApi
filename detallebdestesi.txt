@@ -1,0 +1,60 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MestroDetalle
+{
+    public class detalledb
+    {
+        private string connectionString =
+            "Data Source=localhost; Initial Catalog=facturap;" +
+            "User=jose; Password=Kuro921*";
+
+        public void Add(string nombre, string cedula, string factura, decimal basei, string contacto, string correo, decimal preciotot, List<detalles>lts)
+        {
+            var dt = new DataTable();
+            dt.Columns.Add("id");
+            dt.Columns.Add("cantidad");
+            dt.Columns.Add("iva");
+            dt.Columns.Add("precio_unit");
+            dt.Columns.Add("producto");
+            
+            int i = 1;
+            foreach (var elemnto in lts)
+            {
+                dt.Rows.Add(i,elemnto.Cantidad,elemnto.Iva,elemnto.Preciou,elemnto.Producto);
+                i++;
+
+            }
+
+            
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                SqlCommand comando = new SqlCommand("sp_guardarcabezera", connection);
+                var parametrolista = new SqlParameter("@detalles", SqlDbType.Structured);
+                parametrolista.TypeName = "dbo.datos_detalles";
+                parametrolista.Value = dt;
+                comando.CommandType = System.Data.CommandType.StoredProcedure;
+                comando.Parameters.Add(parametrolista);
+                comando.Parameters.AddWithValue("@nombre_cl", nombre);
+                comando.Parameters.AddWithValue("@cedula", cedula);
+                comando.Parameters.AddWithValue("@num_factura", factura);
+                comando.Parameters.AddWithValue("@base_imp", basei);
+                comando.Parameters.AddWithValue("@contacto", contacto);
+                comando.Parameters.AddWithValue("@correo", correo);
+                comando.Parameters.AddWithValue("@preciotot", preciotot);
+
+
+                connection.Open();
+                comando.ExecuteNonQuery();
+                connection.Close();
+            }
+
+        }
+    }
+}

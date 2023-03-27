@@ -1,0 +1,148 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace MestroDetalle
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+            txtfactura.Text = llamarNumFactura();
+            //txttotal.Text = sumafactura();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+            string cantidad = txtcantidad.Text;
+            decimal Iva = decimal.Parse(txtiva.Text);
+            decimal cajaprecio = decimal.Parse(txtpreciou.Text);
+            decimal calculof = cajaprecio * int.Parse(cantidad);//precio de producto
+            decimal formula = calculof * Iva;
+            decimal Preciou = calculof + formula;
+            string producto = txtproducto.Text;
+            tablagv.Rows.Add(new object[] { cantidad, Iva, Preciou, producto });
+
+            txtcantidad.Text = "";
+            txtiva.Text = "";
+            txtpreciou.Text = "";
+            txtproducto.Text = "";
+
+            //double baseimpo = double.Parse(txtbaseimponible.Text);
+
+            sumafactura();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                List<detalles> lst = new List<detalles>();
+
+
+                //llenar elelmet
+                foreach (DataGridViewRow dr in tablagv.Rows)
+                {
+                    detalles odetalle = new detalles();
+                    odetalle.Cantidad = int.Parse(dr.Cells[0].Value.ToString());
+                    odetalle.Iva = decimal.Parse(dr.Cells[1].Value.ToString());
+                    odetalle.Preciou = decimal.Parse(dr.Cells[2].Value.ToString());
+                    odetalle.Producto = dr.Cells[3].Value.ToString();
+                    lst.Add(odetalle);
+
+                }
+
+                detalledb oingreso = new detalledb();
+                oingreso.Add(txtnombre.Text, txtcedula.Text, txtfactura.Text, decimal.Parse(txtbaseimponible.Text), txtcontacto.Text, txtcorreo.Text, decimal.Parse(txttotal.Text), lst);
+                MessageBox.Show("ingreso realizado");
+                limpiar();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message);
+            }
+
+
+
+        }
+        public decimal sumafactura()
+        {
+            decimal sumatoria = 0;
+            decimal textobasae = decimal.Parse(txtbaseimponible.Text);
+            decimal formula;
+            decimal suma;
+            decimal total = 0; ;
+
+            foreach (DataGridViewRow row in tablagv.Rows)
+            {
+                sumatoria += Convert.ToDecimal(row.Cells["preciou"].Value);
+                formula = sumatoria * textobasae;
+                suma = sumatoria + formula;
+                total = suma;
+            }
+
+            txttotal.Text = Convert.ToString(total);
+            
+            return decimal.Parse(txttotal.Text);
+        }
+        private string connectionString =
+            "Data Source=localhost; Initial Catalog=facturap;" +
+            "User=jose; Password=Kuro921*";
+
+        public string llamarNumFactura()
+        {
+            SqlDataReader reader = null;
+            SqlConnection connection = new SqlConnection(connectionString);
+            connection.Open();
+            string sql = "SELECT  MAX(num_factura) FROM" +
+                " cabezera ";
+            int contador;
+
+            SqlCommand command = new SqlCommand(sql, connection);
+            reader = command.ExecuteReader();
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    contador = int.Parse(txtfactura.Text = reader.GetString(0)) + 1;
+                    return contador.ToString();
+
+                }
+            }
+            return null;
+
+        }
+
+        private void limpiar()
+        {
+            txtcedula.Text = "";
+            txtnombre.Text = "";
+            txtfactura.Text = llamarNumFactura();
+            txtbaseimponible.Text = "";
+            txtcontacto.Text = "";
+            txtcorreo.Text = "";
+            txtcantidad.Text = "";
+            txtiva.Text = "";
+            txtpreciou.Text = "";
+            txtproducto.Text = "";
+            txttotal.Text = "";
+            this.tablagv.Rows.Clear();
+
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
+
